@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            overflow: hidden;
+        }
+        #main{
+        /* width: 390px;
+        height: 625px; */
+        }
+        #ltrees,#rtrees{
+        background-image: url("left.jpg");
+        position: absolute;
+        left: 250px;
+        height: 50000px;
+        width: 150px;
+        margin-right: 200px;
+        transform: translateY(-40000px);
+        }
+        .l-tree,.r-tree{
+        animation: road 150s linear infinite ;
+        background-repeat: repeat-y;
+        }
+        #rtrees{
+            width: 200px;
+                left: 850px;
+                background-image: url("right.jpg");
+        }
+        #road{
+            background-image: url("road.jpg");
+        position: absolute;
+        left: 450px;
+        height: 2000px;
+        width: 390px;
+        transform: translateY(-1025px);
+        }
+    .bgimg{
+        animation: road 3.5s linear infinite ;
+        background-repeat: repeat-y;
+    }
+    @keyframes road{
+        100%{
+            transform: translateY(0px);
+    }
+}
+#c1{
+    position: absolute;
+    height: 150px;
+    width: 100px;
+    /* bottom: 10px; */
+    top: 450px;
+    left: 464px;
+    transition: 0.2s all;
+}
+.enemy{
+    position: absolute;
+    height: 130px;
+    width: 100px;
+    top:-200px;
+    animation: move 3.5s linear;
+}
+@keyframes move {
+    100%{
+        top :625px;    
+    }
+    
+}
+.out1{
+    animation: down 2s linear infinite;
+}
+@keyframes down{
+    25%{
+        opacity: 0.2;
+    }
+    50%{
+        opacity: 1;
+    }
+    75%{
+        opacity: 0.2;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+label{
+    font-size: 20px;
+    margin: 10px;
+}
+#over{
+    font-size: 40px;
+    position: absolute;
+    left: 39%;
+    top: 10%;
+    color: white;
+    background-color: rgba(0, 0,0, 0.4);
+    padding: 15px;
+    opacity: 0;
+}
+.retry1,.again{
+    font-size: 20px;
+    margin: 0px 0px 0px 50px;
+    color:  white;
+    background-color: rgba(0, 0,0, 0.2);
+    padding: 15px;
+}
+.again:hover{
+    cursor: pointer;
+}
+#win1{
+    font-size: 40px;
+    position: absolute;
+    left: 34.5%;
+    top: 10%;
+    color: aliceblue;
+    background-color: rgba(0, 0,0, 0.4);
+    padding: 15px;
+    opacity: 0;
+}
+.again{
+margin-left: 120px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="l-tree" id="ltrees"></div>
+    <div id="main">
+        <div class="bgimg" id="road">
+        </div>
+       <label>Score = </label> <label id="win">0</label><br>
+        <label>Loss = </label><label id="loss">3</label>
+        <!-- <label>Press = </label><label id="press1">0</label> -->
+        <img src="car3.png" id="c1">
+        <audio autoplay hidden id="sound">
+            <source src="">
+        </audio>
+        <div id="over"> Game Over<br> <input type="button" class="retry1" value="Retry" onclick="again()"></div>
+        <div id="win1"> You Win The Game <br> <input type="button" class="again " value="Again" onclick="again()"></div>
+    </div>
+    <div class="r-tree" id="rtrees"></div>
+</body>
+<script>
+    function again(){
+        window.location.href = "Game.html";
+    }
+    var car = document.getElementById("c1");
+    var crash = document.getElementById("sound");
+    var temp = 0;
+    var tmp = 0;
+    var win= 0;
+    var loss = 3;
+    car.style.left = "464px";  
+    var main = document.getElementById("main");
+    document.addEventListener("keyup",function(){
+    key = event.keyCode;
+    if(key==39 && temp == 0){
+      car.style.left = "595px";
+      temp = 1;
+      tmp = 1;
+    }     
+    else if(key == 37 && tmp == 1){
+        car.style.left = "464px";  
+        temp = 0;
+    }
+    else if(temp == 1 && key == 39){
+        car.style.left = "725px";
+        tmp = 0;
+    }
+    else if(key == 37 && tmp == 0){
+        car.style.left = "595px";
+        tmp = 1;
+    }
+})
+var c1 = 0;
+    // var remove = setTimeout(()=>{
+        // var loss1 = 2400;
+        // var loss2 = 3000;
+        // var t1 = 3200;
+        // var t2 = 3600;
+        // var r=0;
+//  function myFunction(){
+//   document.getElementById("press1").innerHTML = r;
+//   document.getElementById("road").style.transition = "2s";
+//   r++;
+//   t1++;
+//   t2++;
+//   loss1++;
+//   console.log(loss1);
+//   loss2++;
+//   set();
+// }   
+//  document.body.addEventListener("keydown", myFunction);    
+//  function set(){
+   var start =  setInterval(() => {
+      var enemy = document.createElement("img");
+      const values = ["464","595","725"];
+      var val = Math.floor( Math.random() * 3);
+    //   console.log(values[val]);
+      enemy.style.left = values[val]+"px";
+        enemy.src = "car2.png";
+        enemy.className = "enemy";
+        main.appendChild(enemy);
+       var a = setTimeout(again,2400);
+       var b = setTimeout(again,3000);
+      function again(){
+      if(car.style.left == "464px" && enemy.style.left == "464px"){
+            // alert("Loss The game");
+            main.removeChild(enemy);
+            crash.src = "crash.mp3";
+            car.className = "out1";
+            // ca.classList.add("out1");
+            loss--;
+            c1=0;
+        }
+        else if (car.style.left == "595px" && enemy.style.left == "595px"){
+            // alert("Loss The game");
+            main.removeChild(enemy);
+            crash.src = "crash.mp3";
+            crash.volume= 0.2;
+            loss--;
+            car.className = "out1";
+            c1=0;
+        }
+       else if(car.style.left == "725px" && enemy.style.left == "725px"){
+            // alert("Loss The game");
+            main.removeChild(enemy);
+            crash.src = "crash.mp3";
+            loss--;
+            car.className = "out1";
+            c1=0;
+        }
+        else{
+            c1 = 1;
+        }
+}
+if(c1 == 1){
+    win++;
+    // c1 = 0;
+}
+// else if(win >=0 && c1 == 1){
+    // win--;
+    // c1 = 0;
+// }
+    document.getElementById("win").innerHTML = win;
+document.getElementById("loss").innerHTML = loss;
+//    win--;
+        if(loss == 0){
+        document.getElementById("over").style.opacity = "1";
+        document.getElementById("road").classList.remove("bgimg");
+        document.getElementById("ltrees").classList.remove("l-tree");
+        document.getElementById("rtrees").classList.remove("r-tree");
+        clearInterval(start);
+        main.removeChild(enemy);
+    }
+    else if (win == 10){
+        document.getElementById("win1").style.opacity = "1";
+        document.getElementById("road").classList.remove("bgimg");
+        document.getElementById("ltrees").classList.remove("l-tree");
+        document.getElementById("rtrees").classList.remove("r-tree");
+        clearInterval(start);
+        main.removeChild(enemy);
+    }
+    car.classList.remove("out1");
+    }, 3200);
+// }
+    setTimeout(()=>{
+        main.removeChild(enemy);
+    },3600)
+
+//  document.getElementById("press").addEventListener("keydown",cnt1);
+</script>
+</html>
